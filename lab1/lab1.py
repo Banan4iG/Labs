@@ -1,5 +1,4 @@
 from enum import Enum
-from lib2to3.pgen2 import token
 
 
 class States(Enum):
@@ -19,12 +18,12 @@ class Lexer:
     def main(self):
         if not symbols:
             self.current_state = States.stop
-        
-        else:
-            if self.current_state == States.stop:
-                print("Stop")
-                exit
+
+        if self.current_state == States.stop:
+            print("Stop")
+            exit()
             
+        else: 
             for symbol in symbols:
                 if self.current_state == States.firstlitera:
                     if symbol >= '0' and symbol <= '9':
@@ -36,6 +35,9 @@ class Lexer:
                         self.current_state = States.nextlitera
                         self.token.append(symbol)
                         continue
+                    else:
+                        self.current_state = States.error
+                        continue
 
                 if self.current_state == States.nextlitera:
                     if symbol == ' ' or symbol == '\n':
@@ -43,8 +45,11 @@ class Lexer:
                         print("".join(self.token))
                         self.token = []
                         continue
-                    else:
+                    elif (symbol >= 'a' and symbol <= 'z') or (symbol >= 'A' and symbol <= 'Z'):
                         self.token.append(symbol)
+                        continue
+                    else:
+                        self.current_state = States.error
                         continue
 
                 if self.current_state == States.error:
@@ -55,12 +60,17 @@ class Lexer:
                         continue
                     else:
                         continue
+
+            lex.current_state = States.stop
                         
             
 symbols = []
-with open("text.txt") as file:
+with open("lab1/text.txt") as file:
     for symbol in file.read():
         symbols.append(symbol)
 
 lex = Lexer(symbols) 
 lex.main()
+
+if lex.current_state == States.stop:
+    print("Stop")

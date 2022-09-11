@@ -1,3 +1,2 @@
-342 
-var line we
-342 d
+var {} line we
+d
