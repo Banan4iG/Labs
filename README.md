@@ -1,2 +1,3 @@
 # Lab1 - State mashine for lexer
-# Lab2 - 
+# Lab2 - Insertion sort
+# Lab3 - 
