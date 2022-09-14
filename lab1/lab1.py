@@ -12,28 +12,29 @@ class States(Enum):
 class Lexer:
     
     def __init__(self, symbols):
+        self.states = States
         self.token = []
-        self.current_state = States.firstLitera
+        self.current_state = self.states.firstLitera
         self.symbols = symbols
         
     def main(self):
-        if not symbols:
-            self.current_state = States.stop
+        if not self.symbols:
+            self.current_state = self.states.stop
                   
         else: 
             for symbol in symbols:
-                if self.current_state == States.firstLitera:
+                if self.current_state == self.states.firstLitera:
                     if (symbol >= 'a' and symbol <= 'z') or (symbol >= 'A' and symbol <= 'Z'):
-                        self.current_state = States.nextLitera
+                        self.current_state = self.states.nextLitera
                         self.token.append(symbol)
                         continue
                     else:
-                        self.current_state = States.error
+                        self.current_state = self.states.error
                         continue
 
-                if self.current_state == States.nextLitera:
+                if self.current_state == self.states.nextLitera:
                     if symbol == ' ' or symbol == '\n':
-                        self.current_state = States.firstLitera
+                        self.current_state = self.states.firstLitera
                         print("".join(self.token))
                         self.token = []
                         continue
@@ -41,21 +42,21 @@ class Lexer:
                         self.token.append(symbol)
                         continue
                     else:
-                        self.current_state = States.error
+                        self.current_state = self.states.error
                         continue
 
-                if self.current_state == States.error:
+                if self.current_state == self.states.error:
                     if symbol == ' ' and symbol != '\n':
                         self.token = []
                         print("Error")
-                        self.current_state = States.firstLitera
+                        self.current_state = self.states.firstLitera
                         continue
                     else:
                         continue
 
-            lex.current_state = States.stop
+            lex.current_state = self.states.stop
         
-        if self.current_state == States.stop:
+        if self.current_state == self.states.stop:
             print("Stop")           
             
 symbols = []
