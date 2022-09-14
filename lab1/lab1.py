@@ -11,57 +11,48 @@ class States(Enum):
 
 class Lexer:
     
-    def __init__(self, symbols):
+    def __init__(self):
         self.states = States
         self.token = []
         self.current_state = self.states.firstLitera
-        self.symbols = symbols
         
-    def main(self):
-        if not self.symbols:
-            self.current_state = self.states.stop
-                  
-        else: 
-            for symbol in symbols:
-                if self.current_state == self.states.firstLitera:
-                    if (symbol >= 'a' and symbol <= 'z') or (symbol >= 'A' and symbol <= 'Z'):
-                        self.current_state = self.states.nextLitera
-                        self.token.append(symbol)
-                        continue
-                    else:
-                        self.current_state = self.states.error
-                        continue
+    def main(self, symbol):
+        if self.current_state == self.states.firstLitera:
+            if (symbol >= 'a' and symbol <= 'z') or (symbol >= 'A' and symbol <= 'Z'):
+                self.current_state = self.states.nextLitera
+                self.token.append(symbol)
+                return
+            else:
+                self.current_state = self.states.error
+                return
 
-                if self.current_state == self.states.nextLitera:
-                    if symbol == ' ' or symbol == '\n':
-                        self.current_state = self.states.firstLitera
-                        print("".join(self.token))
-                        self.token = []
-                        continue
-                    elif (symbol >= 'a' and symbol <= 'z') or (symbol >= 'A' and symbol <= 'Z') or (symbol >= '0' and symbol <= '9'):
-                        self.token.append(symbol)
-                        continue
-                    else:
-                        self.current_state = self.states.error
-                        continue
+        if self.current_state == self.states.nextLitera:
+            if symbol == ' ' or symbol == '\n':
+                self.current_state = self.states.firstLitera
+                print("".join(self.token))
+                self.token = []
+                return
+            elif (symbol >= 'a' and symbol <= 'z') or (symbol >= 'A' and symbol <= 'Z') or (symbol >= '0' and symbol <= '9'):
+                self.token.append(symbol)
+                return
+            else:
+                self.current_state = self.states.error
+                return
 
-                if self.current_state == self.states.error:
-                    if symbol == ' ' and symbol != '\n':
-                        self.token = []
-                        print("Error")
-                        self.current_state = self.states.firstLitera
-                        continue
-                    else:
-                        continue
-
-            lex.current_state = self.states.stop
-        
-        if self.current_state == self.states.stop:
-            print("Stop")           
-            
-symbols = []
+        if self.current_state == self.states.error:
+            if symbol == ' ' and symbol != '\n':
+                self.token = []
+                print("Error")
+                self.current_state = self.states.firstLitera
+                return
+            else:
+                return
+       
+lex = Lexer()
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'text.txt')) as file:
     for symbol in file.read():
-        symbols.append(symbol)
-lex = Lexer(symbols) 
-lex.main()
+        lex.main(symbol)
+    lex.current_state = lex.states.stop
+
+if lex.current_state == lex.states.stop:
+    print("Stop")
