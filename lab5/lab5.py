@@ -37,13 +37,21 @@ class Graph(object):
         if start_node == target_node:
             print("Пункт отправления == Пункт назначения :)")
             return
-                
+        
+        if not self.graph[target_node]:
+            print("Отсутсвуют связи с Пунктом назначения :(")
+            return
+
+        if not self.graph[start_node]:
+            print("Из Пункта отправления невозможно отправиться:(")
+            return
+
         unvisited_nodes = list(self.nodes)
 
         if start_node not in unvisited_nodes or target_node not in unvisited_nodes:
             print("Пункт отправления и/или Пункт назначения не найден(ы) :(")
             return
-
+        
         shortest_path = {}
     
         previous_nodes = {}
@@ -98,9 +106,6 @@ connections['C']['D'] = 8
 connections['C']['F'] = 6
 connections['D']['E'] = 3
 connections['F']['G'] = 7
-
-
-
 
 graph = Graph(nodes, connections)
 
